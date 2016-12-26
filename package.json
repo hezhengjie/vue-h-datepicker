@@ -1,7 +1,8 @@
 {
   "name": "vue-h-datepicker",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "mobile date picker",
+  "main": "./dist/vue-h-datepicker.js",
   "author": "hugh<hzj727792893@gmail.com>",
   "scripts": {
     "dev": "webpack-dev-server --content-base demo/ --inline --hot",
