@@ -17,7 +17,7 @@
     </template>
 
     <script>
-      import DatePicker from '';
+      import DatePicker from 'vue-h-datepicker';
         export default {
             data(){
                 return {
