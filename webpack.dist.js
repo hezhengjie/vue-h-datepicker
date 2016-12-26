@@ -5,7 +5,7 @@ module.exports = {
   output: {
     path: "./dist",
     publicPath: "/dist/",
-    filename: "vue-h-datePicker.js",
+    filename: "vue-h-datepicker.js",
     library: ["vueHDatePicker"],
     libraryTarget: "umd"
   },
@@ -59,7 +59,7 @@ module.exports = {
 //   ])
 // }
 if (process.env.NODE_ENV === 'production') {
-  module.exports.output.filename = "vue-h-datePicker.min.js",
+  module.exports.output.filename = "vue-h-datepicker.min.js",
       module.exports.plugins = [
         new webpack.DefinePlugin({
           'process.env': {
