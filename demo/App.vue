@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import DatePicker from './components/DatePicker.vue';
+  import DatePicker from '../src/DatePicker.vue';
 
 export default {
   data(){
@@ -15,8 +15,8 @@ export default {
         status:false,
         year:2001,
         month:11,
-        day:12
-//        yearScope:[1991,2018]//可选默认为今年前后20年
+        day:12,
+        yearScope:[1991,2018]//可选,默认为今年前后20年
       },
       date:'2012-12-12'
     }
@@ -26,10 +26,10 @@ export default {
   },
   events:{
     getDate: function(date){
-      this.date = date.year+'-'+date.month+'-'+date.day;
+      this.date = date.year+'-'+date.month+'-'+date.day;//选择之后的回调函数
     },
     cancelPicker:function(){
-      this.startDate.status = false;
+      this.startDate.status = false;//取消之后的回调函数
     }
   },
   methods:{

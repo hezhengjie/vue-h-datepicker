@@ -5,9 +5,9 @@
   "author": "hugh<hzj727792893@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "node build/dev-server.js",
-    "build": "node build/build.js",
-    "test": ""
+    "dev": "webpack-dev-server --content-base demo/ --inline --hot",
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
+    "dist": "webpack --config webpack.dist.js && cross-env NODE_ENV=production webpack --config webpack.dist.js"
   },
   "dependencies": {
     "babel-runtime": "^6.0.0",
@@ -42,6 +42,7 @@
     "webpack": "^1.12.2",
     "webpack-dev-middleware": "^1.4.0",
     "webpack-hot-middleware": "^2.6.0",
-    "webpack-merge": "^0.8.3"
+    "webpack-merge": "^0.8.3",
+    "cross-env": "^3.1.3"
   }
 }
