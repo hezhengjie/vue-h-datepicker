@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "mobile date picker",
   "author": "hugh<hzj727792893@gmail.com>",
-  "private": true,
   "scripts": {
     "dev": "webpack-dev-server --content-base demo/ --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
