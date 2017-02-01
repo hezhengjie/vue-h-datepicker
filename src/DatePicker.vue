@@ -7,7 +7,8 @@
                 <div class="btn save" @click="saveDate">确认</div>
             </div>
             <div class="modal-content date">
-                <div class="picker-date" @touchstart="touchstartYear" @touchmove="touchmoveYear" @touchend="touchendYear">
+                <div class="picker-date" @touchstart="touchstartYear" @touchmove="touchmoveYear"
+                     @touchend="touchendYear">
                     <ul class="year" :style="{transform: 'translate3d(0, ' + initOffsetYear + 'px, 0)'}">
                         <li></li>
                         <li></li>
@@ -16,7 +17,7 @@
                         <li></li>
                     </ul>
                 </div>
-                <div class="picker-date" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend">
+                <div class="picker-date" @touchstart="touchstartMonth" @touchmove="touchmoveMonth" @touchend="touchendMonth">
                     <ul class="month" :style="{transform: 'translate3d(0, ' + initOffsetMonth + 'px, 0)'}">
                         <li></li>
                         <li></li>
@@ -43,17 +44,22 @@
 </template>
 
 <style lang="less">
-    html{
-       font-size: 10px;
-    }
-    *{
+    @iphone4: 8.53px;
+    @galaxyS4: 9.6px;
+    @iphone5: 8.53px;
+    @iphone6: 10px;
+    @iphone6P: 11.04px;
+
+    * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
     }
-    ul,li,ol{
+
+    ul, li, ol {
         list-style: none;
     }
+
     .modal-wrapper {
         width: 100%;
         height: 100%;
@@ -61,10 +67,103 @@
         top: 0;
         z-index: 21;
         transition: opacity .2s;
+        font-size: @iphone4;
     }
+
+    @media (device-width: 320px) and (min-resolution: 2dppx) {
+        .modal-wrapper {
+            font-size: @iphone4;
+        }
+    }
+
+    @media (device-width: 360px) and (min-resolution: 3dppx) {
+        .modal-wrapper {
+            font-size: @galaxyS4;
+        }
+    }
+
+    @media (device-width: 320px) and (min-resolution: 2dppx) {
+        .modal-wrapper {
+            font-size: @iphone5;
+        }
+    }
+
+    @media (device-width: 375px) and (min-resolution: 2dppx) {
+        .modal-wrapper {
+            font-size: @iphone6;
+        }
+    }
+
+    @media (device-width: 414px) and (min-resolution: 3dppx) {
+        .modal-wrapper {
+            font-size: @iphone6P;
+        }
+    }
+
+    @media (device-width: 320px) and (min--moz-device-pixel-ratio: 2) {
+        .modal-wrapper {
+            font-size: @iphone4;
+        }
+    }
+
+    @media (device-width: 360px) and (min--moz-device-pixel-ratio: 3) {
+        .modal-wrapper {
+            font-size: @galaxyS4;
+        }
+    }
+
+    @media (device-width: 320px) and (min--moz-device-pixel-ratio: 2) {
+        .modal-wrapper {
+            font-size: @iphone5;
+        }
+    }
+
+    @media (device-width: 375px) and (min--moz-device-pixel-ratio: 2) {
+        .modal-wrapper {
+            font-size: @iphone6;
+        }
+    }
+
+    @media (device-width: 414px) and (min--moz-device-pixel-ratio: 3) {
+        .modal-wrapper {
+            font-size: @iphone6P;
+        }
+    }
+
+    @media (device-width: 320px) and (-webkit-min-device-pixel-ratio: 2) {
+        .modal-wrapper {
+            font-size: @iphone4;
+        }
+    }
+
+    @media (device-width: 360px) and (-webkit-min-device-pixel-ratio: 3) {
+        .modal-wrapper {
+            font-size: @galaxyS4;
+        }
+    }
+
+    @media (device-width: 320px) and (-webkit-min-device-pixel-ratio: 2) {
+        .modal-wrapper {
+            font-size: @iphone5;
+        }
+    }
+
+    @media (device-width: 375px) and (-webkit-min-device-pixel-ratio: 2) {
+        .modal-wrapper {
+            font-size: @iphone6;
+        }
+    }
+
+    @media (device-width: 414px) and (-webkit-min-device-pixel-ratio: 3) {
+        .modal-wrapper {
+            font-size: @iphone6P;
+        }
+    }
+
     .modal-enter, .modal-leave {
         opacity: 0;
     }
+
     .modal-mask {
         width: 100%;
         height: 100%;
@@ -72,30 +171,32 @@
         top: 0;
         background-color: rgba(0, 0, 0, .4);
     }
+
     .modal-content {
         position: relative;
     }
+
     .modal-content.sex {
         width: 100%;
         position: absolute;
         bottom: 0;
         transition: all .3s;
         background-color: #F0F0F0;
-    ul {
-          padding: 0 .2rem;
-          background-color: #FFF;
-      }
+        ul {
+            padding: 0 .2em;
+            background-color: #FFF;
+        }
 
-    li {
-          text-align: center;
-          font-size: .32rem;
-          line-height: .9rem;
-      }
+        li {
+            text-align: center;
+            line-height: .9em;
+        }
 
-    li:first-child {
-          border-bottom: 1px solid #EEE;
-      }
+        li:first-child {
+            border-bottom: 1px solid #EEE;
+        }
     }
+
     .modal-enter .modal-content, .modal-leave .modal-content, .modal-enter .modal-container, .modal-leave .modal-container {
         transform: translateY(100%);
     }
@@ -104,34 +205,34 @@
         width: 100%;
         position: absolute;
         bottom: 0;
-        height: 18rem;
+        height: 18em;
         background-color: #FFF;
         transition: all .2s;
     }
+
     .modal-btn-wrapper {
         display: flex;
         justify-content: space-between;
 
-    & .btn {
-          width: 6rem;
-          height: 3rem;
-            line-height: 3rem;
-        text-align: center;
-        font-size: 1.4rem;
-        color: #0088cc;
+        & .btn {
+            width: 6em;
+            height: 3em;
+            line-height: 3em;
+            text-align: center;
+            font-size: 1.4em;
+            color: #0088cc;
 
-      }
+        }
     }
 
     .modal-content.date {
-        margin: 0 4rem;
-        font-size: 2rem;
-        height: 15rem;
+        margin: 0 4em;
+        height: 15em;
         text-align: center;
         & .picker-date {
             display: inline-block;
             width: 31%;
-            height: 15rem;
+            height: 15em;
             overflow: hidden;
         }
 
@@ -140,12 +241,11 @@
         }
 
         & li {
-            height: 3rem;
+            height: 1.5em;
             text-align: center;
-            font-size: 2rem;
-            line-height: 3rem;
+            font-size: 2em;
+            line-height: 1.5em;
         }
-
         & .up, .down {
             width: 100%;
             height: 50%;
@@ -165,7 +265,7 @@
 
         .line {
             width: 100%;
-            height: 3rem;
+            height: 3em;
             position: absolute;
             top: 50%;
             left: 50%;
@@ -179,35 +279,31 @@
 </style>
 <script>
     export default {
-        props: ["status", "yearValue", "monthValue","dayValue","yearScope"],
+        props: ["status", "startDate","yearScope"],
         data() {
             return {
                 months: [],
                 years: [],
-                days:[]
-
+                days: [],
+                fontSize: ''
             }
         },
         computed: {
             showStatus(){
                 return this.status;
             },
-            fontSize(){
-                let fontsize =getComputedStyle(window.document.documentElement)['font-size'].replace(/px/g,"");
-                return fontsize
-            },
             initOffsetMonth() {
-                let value = - this.months.indexOf(this.monthValue) * this.fontSize*3;
+                let value = -this.months.indexOf(this.startDate.month) * this.fontSize * 3;
                 this.month && (this.month.offset = value);
                 return value
             },
             initOffsetYear() {
-                let value = - this.years.indexOf(this.yearValue)  * this.fontSize*3;
+                let value = -this.years.indexOf(this.startDate.year) * this.fontSize * 3;
                 this.year && (this.year.offset = value);
                 return value
             },
             initOffsetDay() {
-                let value = - this.days.indexOf(this.dayValue)  * this.fontSize*3;
+                let value = -this.days.indexOf(this.startDate.day) * this.fontSize * 3;
                 this.day && (this.day.offset = value);
                 return value
             }
@@ -223,17 +319,17 @@
 
                 let offset = e.touches[0].clientY - this[type].startY;
                 let disance = this[type].offset + offset;
-                if (Math.abs(offset) % (3*this.fontSize) === 0) {
+                if (Math.abs(offset) % (3 * this.fontSize) === 0) {
                     let time = Date.now();
                     this[type].speeds.push((Math.abs(offset) / (time - this[type].time)).toFixed(2))
                 }
-                if (disance > 40) {
-                    disance = 40;
+                if (disance > 0) {
+                    disance = 0;
                     this[type].limit = true;
                     return
                 }
-                if (disance < - this[type].maxOffset) {
-                    disance = - this[type].maxOffset;
+                if (disance < -this[type].maxOffset) {
+                    disance = -this[type].maxOffset;
                     this[type].limit = true;
                     return
                 }
@@ -243,11 +339,10 @@
             },
             touchend(e, type) {
                 let currentOffset = e.changedTouches[0].clientY - this[type].startY;
-                let minScroll, maxScroll,
-                        offset = this[type].offset,
-                        fontSize = this.fontSize;
+                let minScroll, maxScroll, offset = this[type].offset, fontSize = this.fontSize;
                 this[type].speeds = this[type].speeds.map((v) => {
-                            if (v !== "Infinity" || ! v) {
+                            if (v !== "Infinity" || !v)
+                {
                     return v
                 }
             })
@@ -258,10 +353,10 @@
                         scroll = true
                     }
                 }
-                if (scroll && ! this[type].limit) {
-                    max = ~~ Math.max.apply(null, this[type].speeds)
+                if (scroll && !this[type].limit) {
+                    max = ~~Math.max.apply(null, this[type].speeds)
                     maxScroll = Math.min(offset + (max * 10 * 3 * fontSize), 0)
-                    minScroll = Math.max(offset - (max * 10 * 3 * fontSize), - (this[type].maxOffset - 40))
+                    minScroll = Math.max(offset - (max * 10 * 3 * fontSize), -(this[type].maxOffset))
                     this[type].offset = currentOffset > 0 ? maxScroll : minScroll
                     let speed = Math.min.apply(null, this[type].speeds)
                     let speedTime = speed > 1 ? 0.2 : speed
@@ -278,50 +373,52 @@
                         this[type].node.style.transform = `translate3d(0, 0, 0)`;
                         this[type].offset = 0
                     } else {
-                        this[type].node.style.transform = `translate3d(0, -${this[type].maxOffset - 40}px, 0)`;
-                        this[type].offset = - (this[type].maxOffset - 40)
+                        this[type].node.style.transform = `translate3d(0, -${this[type].maxOffset}px, 0)`;
+                        this[type].offset = -(this[type].maxOffset - 40)
                     }
                 } else {
                     let perfect;
                     this[type].offset += currentOffset;
                     let next = 0;
                     let height = 3 * fontSize;
-                    let index = ~~ (Math.abs(this[type].offset) / height);
+                    let index = ~~(Math.abs(this[type].offset) / height);
                     let step = index * height;
                     let nextStep = (index + 1) * height;
                     if (nextStep - Math.abs(this[type].offset) < Math.abs(this[type].offset) - step && index !== 11 && index !== 0) {
                         next = 1
                     }
                     perfect = next ? nextStep : step;
-                    this[type].offset = - perfect;
+                    this[type].offset = -perfect;
                     this[type].node.style.transform = `translate3d(0, -${perfect}px, 0)`
                 }
             }
         },
         methods: {
             cancel(){
-                this.$dispatch('cancelPicker');
+                this.$emit('cancel');
             },
             saveDate() {
-                let step = ~~ (3 * this.fontSize),
-                        yearTop =  Math.abs(this.year.offset),
-                        monthTop =  Math.abs(this.month.offset),
-                dayTop =  Math.abs(this.day.offset);
-                let yearValue = this.years[Math.min(99, ~~ (yearTop / step))];
-                let monthValue = this.months[~~ (monthTop / step)];
-                let dayValue = this.days[~~ (dayTop / step)];
-                this.$dispatch('getDate',{year:yearValue,
-                    month:monthValue,
-                    day:dayValue});
-                this.$dispatch('cancelPicker');
+                let step = ~~(3 * this.fontSize),
+                        yearTop = Math.abs(this.year.offset),
+                        monthTop = Math.abs(this.month.offset),
+                        dayTop = Math.abs(this.day.offset);
+                let yearValue = this.years[Math.min(99, ~~(yearTop / step))];
+                let monthValue = this.months[~~(monthTop / step)];
+                let dayValue = this.days[~~(dayTop / step)];
+                this.$emit('confirm', {
+                    year: yearValue,
+                    month: monthValue,
+                    day: dayValue
+                });
+                this.$emit('cancel');
             },
-            touchstart(e) {
+            touchstartMonth(e) {
                 this.$emit("touchstart", e, "month")
             },
-            touchmove(e) {
+            touchmoveMonth(e) {
                 this.$emit("touchmove", e, "month")
             },
-            touchend(e) {
+            touchendMonth(e) {
                 this.$emit("touchend", e, "month")
             },
             touchstartYear(e) {
@@ -345,41 +442,42 @@
             }
         },
         ready() {
-            let year = 0, month = 0,day=0,
-                    fontSize = this.fontSize,
-                    yearLimit = 40,
-                    currentYear = new Date().getFullYear()+Math.floor(yearLimit/2);
-            if(this.yearScope){
-                yearLimit = this.yearScope[1]-this.yearScope[0];
-                currentYear = this.yearScope[1];
-            }
-            while (year <= yearLimit) {
-                this.years.unshift(currentYear - year);
-                year++
-            }
-            while (month < 12) {
-                this.months.push(month + 1);
-                month++
-            }
-            while (day < 31) {
-                this.days.push(day + 1);
-                day++
-            }
-            this.month = {
-                node: document.querySelector(".month"),
-                offset: 0,
-                maxOffset: ~~ (12* 3 * fontSize)
-            };
-            this.year = {
-                node: document.querySelector(".year"),
-                offset: 0,
-                maxOffset: ~~ (yearLimit* 3* fontSize)
-            };
-            this.day = {
-                node: document.querySelector(".day"),
-                offset: 0,
-                maxOffset: ~~ (31* 3 * fontSize)
-            }
+            let self = this;
+            this.$nextTick(function () {
+                self.fontSize = getComputedStyle(document.querySelector('.modal-wrapper'))['font-size'].replace(/px/g, "");
+                let year = 0, month = 0, day = 0, fontSize = self.fontSize, yearLimit = 40, currentYear = new Date().getFullYear() + Math.floor(yearLimit / 2);
+                if (this.yearScope) {
+                    yearLimit = this.yearScope[1] - this.yearScope[0];
+                    currentYear = this.yearScope[1];
+                }
+                while (year <= yearLimit) {
+                    this.years.unshift(currentYear - year);
+                    year++
+                }
+                while (month < 12) {
+                    this.months.push(month + 1);
+                    month++
+                }
+                while (day < 31) {
+                    this.days.push(day + 1);
+                    day++
+                }
+                this.month = {
+                    node: document.querySelector(".month"),
+                    offset: 0,
+                    maxOffset: ~~((12-1)* 3 * fontSize)//去除小数部分
+                };
+                this.year = {
+                    node: document.querySelector(".year"),
+                    offset: 0,
+                    maxOffset: ~~(yearLimit * 3 * fontSize)
+                };
+                this.day = {
+                    node: document.querySelector(".day"),
+                    offset: 0,
+                    maxOffset: ~~((31-1)* 3 * fontSize)
+                }
+            });
         }
     }
 </script>
