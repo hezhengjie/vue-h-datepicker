@@ -6,7 +6,7 @@
                 <div class="btn" @click="cancel">取消</div>
                 <div class="btn save" @click="saveDate">确认</div>
             </div>
-            <div class="modal-content date">
+            <div class="modal-content date" v-if="type=='date'">
                 <div class="picker-date" @touchstart="touchstartYear" @touchmove="touchmoveYear"
                      @touchend="touchendYear">
                     <ul class="year" :style="{transform: 'translate3d(0, ' + initOffsetYear + 'px, 0)'}">
@@ -31,6 +31,39 @@
                         <li></li>
                         <li></li>
                         <li v-for="day in days" v-text="day" track-by="$index"></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+                <div class="up"></div>
+                <div class="down"></div>
+                <div class="line"></div>
+            </div>
+            <div class="modal-content time" v-else>
+                <div class="picker-date" @touchstart="touchstartMeridiem" @touchmove="touchmoveMeridiem"
+                     @touchend="touchendMeridiem">
+                    <ul class="meridiem" :style="{transform: 'translate3d(0, ' + initOffsetMeridiem + 'px, 0)'}">
+                        <li></li>
+                        <li></li>
+                        <li v-for="meridiem in meridiems" v-text="meridiem" track-by="$index"></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+                <div class="picker-date" @touchstart="touchstartHour" @touchmove="touchmoveHour" @touchend="touchendHour">
+                    <ul class="hour" :style="{transform: 'translate3d(0, ' + initOffsetHour + 'px, 0)'}">
+                        <li></li>
+                        <li></li>
+                        <li v-for="hour in hours" v-text="hour" track-by="$index"></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+                <div class="picker-date" @touchstart="touchstartMinute" @touchmove="touchmoveMinute" @touchend="touchendMinute">
+                    <ul class="minute" :style="{transform: 'translate3d(0, ' + initOffsetMinute + 'px, 0)'}">
+                        <li></li>
+                        <li></li>
+                        <li v-for="minute in minutes" v-text="minute" track-by="$index"></li>
                         <li></li>
                         <li></li>
                     </ul>
@@ -225,7 +258,7 @@
         }
     }
 
-    .modal-content.date {
+    .modal-content {
         margin: 0 4em;
         height: 15em;
         text-align: center;
@@ -279,12 +312,16 @@
 </style>
 <script>
     export default {
-        props: ["status", "startDate","yearScope"],
+        props: ["status","option"],
         data() {
             return {
+                type:this.option.type,
                 months: [],
                 years: [],
                 days: [],
+                meridiems:['上午','下午'],
+                hours:[],
+                minutes:[],
                 fontSize: ''
             }
         },
@@ -293,18 +330,33 @@
                 return this.status;
             },
             initOffsetMonth() {
-                let value = -this.months.indexOf(this.startDate.month) * this.fontSize * 3;
+                let value = -this.months.indexOf(this.option.startDate.month) * this.fontSize * 3;
                 this.month && (this.month.offset = value);
                 return value
             },
             initOffsetYear() {
-                let value = -this.years.indexOf(this.startDate.year) * this.fontSize * 3;
+                let value = -this.years.indexOf(this.option.startDate.year) * this.fontSize * 3;
                 this.year && (this.year.offset = value);
                 return value
             },
             initOffsetDay() {
-                let value = -this.days.indexOf(this.startDate.day) * this.fontSize * 3;
+                let value = -this.days.indexOf(this.option.startDate.day) * this.fontSize * 3;
                 this.day && (this.day.offset = value);
+                return value
+            },
+            initOffseMeridiemt() {
+                let value = -this.meridiems.indexOf(this.option.startTime.meridiem) * this.fontSize * 3;
+                this.meridiem && (this.meridiem.offset = value);
+                return value
+            },
+            initOffsetHour() {
+                let value = -this.hours.indexOf(this.option.startTime.hour) * this.fontSize * 3;
+                this.hour && (this.hour.offset = value);
+                return value
+            },
+            initOffsetMinute() {
+                let value = -this.minutes.indexOf(this.option.startTime.minute) * this.fontSize * 3;
+                this.minute && (this.minute.offset = value);
                 return value
             }
 
@@ -374,7 +426,7 @@
                         this[type].offset = 0
                     } else {
                         this[type].node.style.transform = `translate3d(0, -${this[type].maxOffset}px, 0)`;
-                        this[type].offset = -(this[type].maxOffset - 40)
+                        this[type].offset = -(this[type].maxOffset)
                     }
                 } else {
                     let perfect;
@@ -398,19 +450,38 @@
                 this.$emit('cancel');
             },
             saveDate() {
-                let step = ~~(3 * this.fontSize),
-                        yearTop = Math.abs(this.year.offset),
-                        monthTop = Math.abs(this.month.offset),
-                        dayTop = Math.abs(this.day.offset);
-                let yearValue = this.years[Math.min(99, ~~(yearTop / step))];
-                let monthValue = this.months[~~(monthTop / step)];
-                let dayValue = this.days[~~(dayTop / step)];
-                this.$emit('confirm', {
-                    year: yearValue,
-                    month: monthValue,
-                    day: dayValue
-                });
-                this.$emit('cancel');
+                if(this.type=="date"){
+                    let step = ~~(3 * this.fontSize),
+                            yearTop = Math.abs(this.year.offset),
+                            monthTop = Math.abs(this.month.offset),
+                            dayTop = Math.abs(this.day.offset);
+                    let yearValue = this.years[Math.min(99, ~~(yearTop / step))];
+                    let monthValue = this.months[~~(monthTop / step)];
+                    let dayValue = this.days[~~(dayTop / step)];
+                    this.$emit('confirm', {
+                        year: yearValue,
+                        month: monthValue,
+                        day: dayValue
+                    });
+                }
+                else if(this.type=="time"){
+                    let step = ~~(3 * this.fontSize),
+                            meridiemTop = Math.abs(this.meridiem.offset),
+                            hourTop = Math.abs(this.hour.offset),
+                            minuteTop = Math.abs(this.minute.offset);
+                    let meridiemValue = this.meridiems[~~(meridiemTop / step)];
+                    let hourValue = this.hours[~~(hourTop / step)];
+                    let minuteValue = this.minutes[~~(minuteTop / step)];
+                    this.$emit('confirm', {
+                        meridiem: meridiemValue,
+                        hour: hourValue,
+                        minute: minuteValue
+                    });
+                }
+                else{
+
+                }
+
             },
             touchstartMonth(e) {
                 this.$emit("touchstart", e, "month")
@@ -439,44 +510,105 @@
             },
             touchendDay(e) {
                 this.$emit("touchend", e, "day")
+            },
+            touchstartMeridiem(e) {
+                this.$emit("touchstart", e, "meridiem")
+            },
+            touchmoveMeridiem(e) {
+                this.$emit("touchmove", e, "meridiem")
+            },
+            touchendMeridiem(e) {
+                this.$emit("touchend", e, "meridiem")
+            },
+            touchstartHour(e) {
+                this.$emit("touchstart", e, "hour")
+            },
+            touchmoveHour(e) {
+                this.$emit("touchmove", e, "hour")
+            },
+            touchendHour(e) {
+                this.$emit("touchend", e, "hour")
+            },
+            touchstartMinute(e) {
+                this.$emit("touchstart", e, "minute")
+            },
+            touchmoveMinute(e) {
+                this.$emit("touchmove", e, "minute")
+            },
+            touchendMinute(e) {
+                this.$emit("touchend", e, "minute")
             }
         },
         ready() {
             let self = this;
             this.$nextTick(function () {
-                self.fontSize = getComputedStyle(document.querySelector('.modal-wrapper'))['font-size'].replace(/px/g, "");
-                let year = 0, month = 0, day = 0, fontSize = self.fontSize, yearLimit = 40, currentYear = new Date().getFullYear() + Math.floor(yearLimit / 2);
-                if (this.yearScope) {
-                    yearLimit = this.yearScope[1] - this.yearScope[0];
-                    currentYear = this.yearScope[1];
+                self.fontSize = parseInt(getComputedStyle(document.querySelector('.modal-wrapper'))['font-size'].replace(/px/g, ""));
+                if(self.type=="date") {
+                    let year = 0, month = 0, day = 0, fontSize = self.fontSize, yearLimit = 40, currentYear = new Date().getFullYear() + Math.floor(yearLimit / 2);
+                    if (this.option.yearScope) {
+                        yearLimit = this.option.yearScope[1] - this.option.yearScope[0];
+                        currentYear = this.option.yearScope[1];
+                    }
+                    while (year <= yearLimit) {
+                        this.years.unshift(currentYear - year);
+                        year++
+                    }
+                    while (month < 12) {
+                        this.months.push(month + 1);
+                        month++
+                    }
+                    while (day < 31) {
+                        this.days.push(day + 1);
+                        day++
+                    }
+                    this.month = {
+                        node: document.querySelector(".month"),
+                        offset: 0,
+                        maxOffset: ~~((12 - 1) * 3 * fontSize)//去除小数部分
+                    };
+                    this.year = {
+                        node: document.querySelector(".year"),
+                        offset: 0,
+                        maxOffset: ~~(yearLimit * 3 * fontSize)
+                    };
+                    this.day = {
+                        node: document.querySelector(".day"),
+                        offset: 0,
+                        maxOffset: ~~((31 - 1) * 3 * fontSize)
+                    }
                 }
-                while (year <= yearLimit) {
-                    this.years.unshift(currentYear - year);
-                    year++
+                else if(self.type=="time"){
+                    let hour = 0, minute = 0, fontSize = self.fontSize;
+                    while (hour < 12) {
+                        this.hours.push(hour + 1);
+                        hour++
+                    }
+                    while (minute < 60) {
+                        if(minute<10){
+                            this.minutes.push('0'+minute);
+                        }
+                        else{
+                            this.minutes.push(minute);
+                        }
+                        minute= minute+5;
+                    }
+                    this.meridiem = {
+                        node: document.querySelector(".meridiem"),
+                        offset: 0,
+                        maxOffset: ~~((2 - 1) * 3 * fontSize)//去除小数部分
+                    };
+                    this.hour = {
+                        node: document.querySelector(".hour"),
+                        offset: 0,
+                        maxOffset: ~~((12 - 1)* 3 * fontSize)
+                    };
+                    this.minute = {
+                        node: document.querySelector(".minute"),
+                        offset: 0,
+                        maxOffset: ~~((12 - 1) * 3 * fontSize)
+                    }
                 }
-                while (month < 12) {
-                    this.months.push(month + 1);
-                    month++
-                }
-                while (day < 31) {
-                    this.days.push(day + 1);
-                    day++
-                }
-                this.month = {
-                    node: document.querySelector(".month"),
-                    offset: 0,
-                    maxOffset: ~~((12-1)* 3 * fontSize)//去除小数部分
-                };
-                this.year = {
-                    node: document.querySelector(".year"),
-                    offset: 0,
-                    maxOffset: ~~(yearLimit * 3 * fontSize)
-                };
-                this.day = {
-                    node: document.querySelector(".day"),
-                    offset: 0,
-                    maxOffset: ~~((31-1)* 3 * fontSize)
-                }
+                else{}
             });
         }
     }
