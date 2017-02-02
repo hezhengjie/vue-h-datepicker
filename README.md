@@ -11,6 +11,10 @@
 # Install
     npm install vue-h-datepicker --save
 
+# Demo
+
+https://hezhengjie.github.io/vue-h-datepicker/index.html
+
 # Usage
 
     <template>
