@@ -43,7 +43,7 @@ https://hezhengjie.github.io/vue-h-datepicker/index.html
       }
     </style>
     <script>
-      import DatePicker from '../src/DatePicker.vue';
+      import DatePicker from 'vue-h-datepicker';
 
     export default {
       data(){
