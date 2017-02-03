@@ -10,7 +10,10 @@ module.exports = {
     libraryTarget: "umd"
   },
   resolve: {
-    extensions: ['', '.js', '.vue']
+    extensions: ['', '.js', '.vue'],
+    alias: {
+        'vue$': 'vue/dist/vue.common.js'
+      }
   },
   module: {
     loaders: [

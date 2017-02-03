@@ -1,4 +1,5 @@
 <template>
+  <div>
   <input v-model="dateOption.date" >
   <div @click="showDatePicker">选择日期</div>
   <div class="wrap">
@@ -10,6 +11,7 @@
   <div @click="showTimePicker">选择时间</div>
   <div class="wrap">
     <app-date-picker :status="timeOption.status" :option="timeOption.option" v-on:confirm="getTime" v-on:cancel="cancelTimePicker"></app-date-picker>
+  </div>
   </div>
  </template>
 <style>

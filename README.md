@@ -1,5 +1,5 @@
 # vue-h-datepicker
-基于Vue1.x的移动端选择组件
+基于Vue的移动端选择组件
 
 # 版本
 1.2
@@ -8,7 +8,13 @@
  修复字体大小获取  
  增加模式选择（日期和时间双模式）
 
+2.0
+ vue 2.x 支持
 # Install
+    1.Vue 1.x 版本
+    npm install vue-h-datepicker@1.* --save
+
+    2.Vue 2.x版本
     npm install vue-h-datepicker --save
 
 # Demo

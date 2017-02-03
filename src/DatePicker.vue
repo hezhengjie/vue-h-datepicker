@@ -12,7 +12,7 @@
                     <ul class="year" :style="{transform: 'translate3d(0, ' + initOffsetYear + 'px, 0)'}">
                         <li></li>
                         <li></li>
-                        <li v-for="year in years" v-text="year" track-by="$index"></li>
+                        <li v-for="year in years" v-text="year" :key="year"></li>
                         <li></li>
                         <li></li>
                     </ul>
@@ -21,7 +21,7 @@
                     <ul class="month" :style="{transform: 'translate3d(0, ' + initOffsetMonth + 'px, 0)'}">
                         <li></li>
                         <li></li>
-                        <li v-for="month in months" v-text="month" track-by="$index"></li>
+                        <li v-for="month in months" v-text="month" :key="month"></li>
                         <li></li>
                         <li></li>
                     </ul>
@@ -30,7 +30,7 @@
                     <ul class="day" :style="{transform: 'translate3d(0, ' + initOffsetDay + 'px, 0)'}">
                         <li></li>
                         <li></li>
-                        <li v-for="day in days" v-text="day" track-by="$index"></li>
+                        <li v-for="day in days" v-text="day" :key="day"></li>
                         <li></li>
                         <li></li>
                     </ul>
@@ -45,7 +45,7 @@
                     <ul class="meridiem" :style="{transform: 'translate3d(0, ' + initOffsetMeridiem + 'px, 0)'}">
                         <li></li>
                         <li></li>
-                        <li v-for="meridiem in meridiems" v-text="meridiem" track-by="$index"></li>
+                        <li v-for="meridiem in meridiems" v-text="meridiem"></li>
                         <li></li>
                         <li></li>
                     </ul>
@@ -54,7 +54,7 @@
                     <ul class="hour" :style="{transform: 'translate3d(0, ' + initOffsetHour + 'px, 0)'}">
                         <li></li>
                         <li></li>
-                        <li v-for="hour in hours" v-text="hour" track-by="$index"></li>
+                        <li v-for="hour in hours" v-text="hour" :key="hour"></li>
                         <li></li>
                         <li></li>
                     </ul>
@@ -63,7 +63,7 @@
                     <ul class="minute" :style="{transform: 'translate3d(0, ' + initOffsetMinute + 'px, 0)'}">
                         <li></li>
                         <li></li>
-                        <li v-for="minute in minutes" v-text="minute" track-by="$index"></li>
+                        <li v-for="minute in minutes" v-text="minute" :key="minute"></li>
                         <li></li>
                         <li></li>
                     </ul>
@@ -344,7 +344,7 @@
                 this.day && (this.day.offset = value);
                 return value
             },
-            initOffseMeridiemt() {
+            initOffsetMeridiem() {
                 let value = -this.meridiems.indexOf(this.option.startTime.meridiem) * this.fontSize * 3;
                 this.meridiem && (this.meridiem.offset = value);
                 return value
@@ -361,7 +361,45 @@
             }
 
         },
-        events: {
+        methods: {
+            cancel(){
+                this.$emit('cancel');
+            },
+            saveDate() {
+                if(this.type=="date"){
+                    let step = ~~(3 * this.fontSize),
+                            yearTop = Math.abs(this.year.offset),
+                            monthTop = Math.abs(this.month.offset),
+                            dayTop = Math.abs(this.day.offset);
+                    let yearValue = this.years[Math.min(99, ~~(yearTop / step))];
+                    let monthValue = this.months[~~(monthTop / step)];
+                    let dayValue = this.days[~~(dayTop / step)];
+                    this.$emit('confirm', {
+                        year: yearValue,
+                        month: monthValue,
+                        day: dayValue
+                    });
+                }
+                else if(this.type=="time"){
+                    let step = ~~(3 * this.fontSize),
+                            meridiemTop = Math.abs(this.meridiem.offset),
+                            hourTop = Math.abs(this.hour.offset),
+                            minuteTop = Math.abs(this.minute.offset);
+                    let meridiemValue = this.meridiems[~~(meridiemTop / step)];
+                    let hourValue = this.hours[~~(hourTop / step)];
+                    let minuteValue = this.minutes[~~(minuteTop / step)];
+                    this.$emit('confirm', {
+                        meridiem: meridiemValue,
+                        hour: hourValue,
+                        minute: minuteValue
+                    });
+                }
+                else{
+
+                }
+
+            },
+
             touchstart(e, type) {
                 this[type].startY = e.touches[0].clientY;
                 this[type].speeds = [];
@@ -443,103 +481,64 @@
                     this[type].offset = -perfect;
                     this[type].node.style.transform = `translate3d(0, -${perfect}px, 0)`
                 }
-            }
-        },
-        methods: {
-            cancel(){
-                this.$emit('cancel');
-            },
-            saveDate() {
-                if(this.type=="date"){
-                    let step = ~~(3 * this.fontSize),
-                            yearTop = Math.abs(this.year.offset),
-                            monthTop = Math.abs(this.month.offset),
-                            dayTop = Math.abs(this.day.offset);
-                    let yearValue = this.years[Math.min(99, ~~(yearTop / step))];
-                    let monthValue = this.months[~~(monthTop / step)];
-                    let dayValue = this.days[~~(dayTop / step)];
-                    this.$emit('confirm', {
-                        year: yearValue,
-                        month: monthValue,
-                        day: dayValue
-                    });
-                }
-                else if(this.type=="time"){
-                    let step = ~~(3 * this.fontSize),
-                            meridiemTop = Math.abs(this.meridiem.offset),
-                            hourTop = Math.abs(this.hour.offset),
-                            minuteTop = Math.abs(this.minute.offset);
-                    let meridiemValue = this.meridiems[~~(meridiemTop / step)];
-                    let hourValue = this.hours[~~(hourTop / step)];
-                    let minuteValue = this.minutes[~~(minuteTop / step)];
-                    this.$emit('confirm', {
-                        meridiem: meridiemValue,
-                        hour: hourValue,
-                        minute: minuteValue
-                    });
-                }
-                else{
-
-                }
-
             },
             touchstartMonth(e) {
-                this.$emit("touchstart", e, "month")
+                this.touchstart(e, "month")
             },
             touchmoveMonth(e) {
-                this.$emit("touchmove", e, "month")
+                this.touchmove(e, "month")
             },
             touchendMonth(e) {
-                this.$emit("touchend", e, "month")
+                this.touchend(e, "month")
             },
             touchstartYear(e) {
 
-                this.$emit("touchstart", e, "year")
+                this.touchstart(e, "year")
             },
             touchmoveYear(e) {
-                this.$emit("touchmove", e, "year")
+                this.touchmove( e, "year")
             },
             touchendYear(e) {
-                this.$emit("touchend", e, "year")
+                this.touchend(e, "year")
             },
             touchstartDay(e) {
-                this.$emit("touchstart", e, "day")
+                this.touchstart(e, "day")
             },
             touchmoveDay(e) {
-                this.$emit("touchmove", e, "day")
+                this.touchmove(e, "day")
             },
             touchendDay(e) {
-                this.$emit("touchend", e, "day")
+                this.touchend(e, "day")
             },
             touchstartMeridiem(e) {
-                this.$emit("touchstart", e, "meridiem")
+                this.touchstart(e, "meridiem")
             },
             touchmoveMeridiem(e) {
-                this.$emit("touchmove", e, "meridiem")
+                this.touchmove(e, "meridiem")
             },
             touchendMeridiem(e) {
-                this.$emit("touchend", e, "meridiem")
+                this.touchend(e, "meridiem")
             },
             touchstartHour(e) {
-                this.$emit("touchstart", e, "hour")
+                this.touchstart(e, "hour")
             },
             touchmoveHour(e) {
-                this.$emit("touchmove", e, "hour")
+                this.touchmove(e, "hour")
             },
             touchendHour(e) {
-                this.$emit("touchend", e, "hour")
+                this.touchend(e, "hour")
             },
             touchstartMinute(e) {
-                this.$emit("touchstart", e, "minute")
+                this.touchstart(e, "minute")
             },
             touchmoveMinute(e) {
-                this.$emit("touchmove", e, "minute")
+                this.touchmove(e, "minute")
             },
             touchendMinute(e) {
-                this.$emit("touchend", e, "minute")
+                this.touchend(e, "minute")
             }
         },
-        ready() {
+        mounted() {
             let self = this;
             this.$nextTick(function () {
                 self.fontSize = parseInt(getComputedStyle(document.querySelector('.modal-wrapper'))['font-size'].replace(/px/g, ""));
