@@ -541,7 +541,7 @@
         mounted() {
             let self = this;
             this.$nextTick(function () {
-                self.fontSize = parseInt(getComputedStyle(document.querySelector('.modal-wrapper'))['font-size'].replace(/px/g, ""));
+                self.fontSize = parseFloat(getComputedStyle(document.querySelector('.modal-wrapper'))['font-size'].replace(/px/g, ""));
                 if(self.type=="date") {
                     let year = 0, month = 0, day = 0, fontSize = self.fontSize, yearLimit = 40, currentYear = new Date().getFullYear() + Math.floor(yearLimit / 2);
                     if (this.option.yearScope) {
