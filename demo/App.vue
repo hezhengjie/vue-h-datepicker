@@ -45,8 +45,9 @@ export default {
           startTime:{
             meridiem:'上午',
             hour:3,
-            minute:35
-          }
+            minute:'00'
+          },
+          minuteSpan:5
         },
         time:'上午 3:35'
       }

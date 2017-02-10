@@ -401,12 +401,15 @@
             },
 
             touchstart(e, type) {
+                e.preventDefault();
+                e.stopPropagation();
                 this[type].startY = e.touches[0].clientY;
                 this[type].speeds = [];
                 this[type].time = Date.now()
             },
             touchmove(e, type) {
-
+                e.preventDefault();
+                e.stopPropagation();
                 let offset = e.touches[0].clientY - this[type].startY;
                 let disance = this[type].offset + offset;
                 if (Math.abs(offset) % (3 * this.fontSize) === 0) {
@@ -428,6 +431,8 @@
                 this[type].node.style.transform = `translate3d(0, ${disance}px, 0)`
             },
             touchend(e, type) {
+                e.preventDefault();
+                e.stopPropagation();
                 let currentOffset = e.changedTouches[0].clientY - this[type].startY;
                 let minScroll, maxScroll, offset = this[type].offset, fontSize = this.fontSize;
                 this[type].speeds = this[type].speeds.map((v) => {
@@ -578,6 +583,7 @@
                 }
                 else if(self.type=="time"){
                     let hour = 0, minute = 0, fontSize = self.fontSize;
+                    let minuteSpan =this.option.minuteSpan?this.option.minuteSpan:5;
                     while (hour < 12) {
                         this.hours.push(hour + 1);
                         hour++
@@ -589,7 +595,7 @@
                         else{
                             this.minutes.push(minute);
                         }
-                        minute= minute+5;
+                        minute= minute+minuteSpan;
                     }
                     this.meridiem = {
                         node: document.querySelector(".meridiem"),
@@ -604,7 +610,7 @@
                     this.minute = {
                         node: document.querySelector(".minute"),
                         offset: 0,
-                        maxOffset: ~~((12 - 1) * 3 * fontSize)
+                        maxOffset: ~~((60/minuteSpan - 1) * 3 * fontSize)
                     }
                 }
                 else{}

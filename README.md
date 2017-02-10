@@ -69,7 +69,8 @@ https://hezhengjie.github.io/vue-h-datepicker/index.html
                 meridiem:'上午',
                 hour:3,
                 minute:35
-              }
+              },
+              minuteSpan:5//分钟间隔,默认为5
             },
             time:'上午 3:35'
           }
