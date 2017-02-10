@@ -266,7 +266,7 @@
             display: inline-block;
             width: 31%;
             height: 15em;
-            overflow: hidden;
+            overflow: scroll;
         }
 
         & ul::-webkit-scrollbar {

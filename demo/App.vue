@@ -47,7 +47,7 @@ export default {
             hour:3,
             minute:'00'
           },
-          minuteSpan:5
+          minuteSpan:10
         },
         time:'上午 3:35'
       }
