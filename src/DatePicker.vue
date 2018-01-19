@@ -7,8 +7,8 @@
                 <div class="btn save" @click="saveDate">确认</div>
             </div>
             <div class="modal-content date" v-if="type=='date'">
-                <div class="picker-date" @touchstart="touchstartYear" @touchmove="touchmoveYear"
-                     @touchend="touchendYear">
+                <div class="picker-date" @touchstart.stop="touchstartYear" @touchmove.stop="touchmoveYear"
+                     @touchend.stop="touchendYear">
                     <ul class="year" :style="{transform: 'translate3d(0, ' + initOffsetYear + 'px, 0)'}">
                         <li></li>
                         <li></li>
@@ -17,7 +17,7 @@
                         <li></li>
                     </ul>
                 </div>
-                <div class="picker-date" @touchstart="touchstartMonth" @touchmove="touchmoveMonth" @touchend="touchendMonth">
+                <div class="picker-date" @touchstart.stop="touchstartMonth" @touchmove.stop="touchmoveMonth" @touchend.stop="touchendMonth">
                     <ul class="month" :style="{transform: 'translate3d(0, ' + initOffsetMonth + 'px, 0)'}">
                         <li></li>
                         <li></li>
@@ -26,7 +26,7 @@
                         <li></li>
                     </ul>
                 </div>
-                <div class="picker-date" @touchstart="touchstartDay" @touchmove="touchmoveDay" @touchend="touchendDay">
+                <div class="picker-date" @touchstart.stop="touchstartDay" @touchmove.stop="touchmoveDay" @touchend.stop="touchendDay">
                     <ul class="day" :style="{transform: 'translate3d(0, ' + initOffsetDay + 'px, 0)'}">
                         <li></li>
                         <li></li>
@@ -40,8 +40,8 @@
                 <div class="line"></div>
             </div>
             <div class="modal-content time" v-else>
-                <div class="picker-date" @touchstart="touchstartMeridiem" @touchmove="touchmoveMeridiem"
-                     @touchend="touchendMeridiem">
+                <div class="picker-date" @touchstart.stop="touchstartMeridiem" @touchmove.stop="touchmoveMeridiem"
+                     @touchend.stop="touchendMeridiem">
                     <ul class="meridiem" :style="{transform: 'translate3d(0, ' + initOffsetMeridiem + 'px, 0)'}">
                         <li></li>
                         <li></li>
@@ -50,7 +50,7 @@
                         <li></li>
                     </ul>
                 </div>
-                <div class="picker-date" @touchstart="touchstartHour" @touchmove="touchmoveHour" @touchend="touchendHour">
+                <div class="picker-date" @touchstart.stop="touchstartHour" @touchmove.stop="touchmoveHour" @touchend.stop="touchendHour">
                     <ul class="hour" :style="{transform: 'translate3d(0, ' + initOffsetHour + 'px, 0)'}">
                         <li></li>
                         <li></li>
@@ -59,7 +59,7 @@
                         <li></li>
                     </ul>
                 </div>
-                <div class="picker-date" @touchstart="touchstartMinute" @touchmove="touchmoveMinute" @touchend="touchendMinute">
+                <div class="picker-date" @touchstart.stop="touchstartMinute" @touchmove.stop="touchmoveMinute" @touchend.stop="touchendMinute">
                     <ul class="minute" :style="{transform: 'translate3d(0, ' + initOffsetMinute + 'px, 0)'}">
                         <li></li>
                         <li></li>
