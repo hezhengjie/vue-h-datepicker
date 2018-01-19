@@ -1,5 +1,5 @@
 <template>
-    <div class="modal-wrapper" transition="modal" v-show="showStatus">
+    <div class="modal-wrapper" transition="modal" v-show="showStatus" @touchmove.stop>
         <div class="modal-mask" @click="cancel"></div>
         <div class="modal-container">
             <div class="modal-btn-wrapper">
